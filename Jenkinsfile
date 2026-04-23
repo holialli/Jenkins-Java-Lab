@@ -1,40 +1,28 @@
 pipeline {
     agent any
-    environment {
-        STUDENT_NAME = "Ali Ahmad"
-        ROLL_NO = "i232050"
+    parameters {
+        booleanParam(name: 'EXECUTE_TESTS', defaultValue: true, description: 'Check to run the Test stage')
     }
     stages {
         stage('Build') {
             steps {
-                echo "Building for ${env.STUDENT_NAME}..."
-                bat 'javac HelloWorld.java' 
+                echo "Building Ali Ahmad's Project..."
+                bat 'javac HelloWorld.java'
             }
         }
         stage('Test') {
+            when {
+                expression { params.EXECUTE_TESTS == true }
+            }
             steps {
-                echo 'Running Tests...'
+                echo 'Parameter was TRUE, running tests...'
                 bat 'java HelloWorld'
             }
         }
         stage('Deploy') {
-    when {
-        branch 'main'
-    }
-    steps {
-        echo 'Deploying because we are on the main branch...'
-    }
-}
-        stage('Deploy') {
             steps {
-                echo 'Deploying to Production...'
-                echo 'Artifacts secured.'
+                echo 'Deploying...'
             }
-        }
-    }
-    post {
-        always {
-            echo 'Lab 12 Pipeline execution finished.'
         }
     }
 }
