@@ -18,6 +18,14 @@ pipeline {
             }
         }
         stage('Deploy') {
+    when {
+        branch 'main'
+    }
+    steps {
+        echo 'Deploying because we are on the main branch...'
+    }
+}
+        stage('Deploy') {
             steps {
                 echo 'Deploying to Production...'
                 echo 'Artifacts secured.'
